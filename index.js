@@ -27,7 +27,7 @@ app.post('/webhook', function (req, res) {
     for (i = 0; i < events.length; i++) {
         var event = events[i];
         if (event.message && event.message.text) {
-            if (!kittenMessage(event.sender.id, event.message.text)) {
+            if (!kittenMessage(event.sender.id, event.message.text) && !help(event.sender.id, event.message.text)) {
         		sendMessage(event.sender.id, {text: "Echo: " + event.message.text});
     		} else if (event.postback) {
    	 			console.log("Postback received: " + JSON.stringify(event.postback));
@@ -99,3 +99,15 @@ function kittenMessage(recipientId, text) {
     return false;
     
 };
+
+function help(recipientId, text) {
+	if (text == "help") {
+		message = {
+			text: "Type 'kitten' followed by two numbers, and you'll receive a picture of a kitten with the width and height of those two numbers."
+		};
+		sendMessage(recipientId, message);
+		return true;
+	};
+	return false
+};
+
